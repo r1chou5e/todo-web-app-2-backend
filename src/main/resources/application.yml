@@ -1,0 +1,9 @@
+spring:
+  application:
+    name: todo-app-backend
+  security:
+    user:
+      password: test12345_
+
+server:
+  port: 8081
