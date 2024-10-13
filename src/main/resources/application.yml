@@ -1,9 +1,14 @@
 spring:
   application:
     name: todo-app-backend
-  security:
-    user:
-      password: test12345_
+  datasource:
+    url: jdbc:postgresql://localhost:5432/todo-app
+    username: postgres
+    password: admin
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
 
 server:
   port: 8081

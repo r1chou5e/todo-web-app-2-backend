@@ -1,13 +1,13 @@
 package com.springboot.todoapp.repository.user;
 
-import org.springframework.security.core.userdetails.User;
+import com.springboot.todoapp.domain.entity.UserEntity;
+import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
-import java.util.Optional;
-
 @Repository
-public class UserRepository {
-    public Optional<User> findByUsername(String username) {
-        return Optional.empty();
-    }
+public interface UserRepository extends CrudRepository<UserEntity, Long> {
+
+  boolean existsByUsername(String username);
+
+  boolean existsByEmail(String email);
 }
