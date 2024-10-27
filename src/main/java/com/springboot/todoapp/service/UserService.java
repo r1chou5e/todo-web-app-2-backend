@@ -3,6 +3,7 @@ package com.springboot.todoapp.service;
 import com.springboot.todoapp.domain.dto.UserDTO;
 import com.springboot.todoapp.domain.entity.UserEntity;
 import com.springboot.todoapp.repository.user.UserRepository;
+import com.springboot.todoapp.security.jwt.JwtTokenProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -16,7 +17,10 @@ public class UserService {
   @Autowired
   private PasswordEncoder passwordEncoder;
 
-  public void registerUser(UserDTO request) {
+  @Autowired
+  private JwtTokenProvider jwtTokenProvider;
+
+  public String registerUser(UserDTO request) {
     if (userRepository.existsByUsername(request.getUsername())) {
       throw new RuntimeException("Username is already taken!");
     }
@@ -30,5 +34,7 @@ public class UserService {
     user.setEmail(request.getEmail());
 
     userRepository.save(user);
+
+    return jwtTokenProvider.generateToken(request.getEmail());
   }
 }

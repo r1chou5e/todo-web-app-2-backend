@@ -20,13 +20,9 @@ public class UserController {
   private UserService userService;
 
   @PostMapping("/register")
-  public ResponseEntity<String> registerUser(
+  public ResponseEntity<?> registerUser(
       @Valid @RequestBody UserRegistrationRequest request) {
-    try {
-      userService.registerUser(new UserDTO(request));
-      return ResponseEntity.ok("User registered successfully!");
-    } catch (RuntimeException e) {
-      return ResponseEntity.badRequest().body(e.getMessage());
-    }
+    String token = userService.registerUser(new UserDTO(request));
+    return ResponseEntity.ok().body("Bearer " + token);
   }
 }
