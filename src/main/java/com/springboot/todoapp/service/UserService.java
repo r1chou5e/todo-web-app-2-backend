@@ -20,7 +20,7 @@ public class UserService {
   @Autowired
   private JwtTokenProvider jwtTokenProvider;
 
-  public String registerUser(UserDTO request) {
+  public void registerUser(UserDTO request) {
     if (userRepository.existsByUsername(request.getUsername())) {
       throw new RuntimeException("Username is already taken!");
     }
@@ -34,7 +34,16 @@ public class UserService {
     user.setEmail(request.getEmail());
 
     userRepository.save(user);
+  }
 
-    return jwtTokenProvider.generateToken(request.getEmail());
+  public String login(String email, String password) {
+    UserEntity user = userRepository.findByEmail(email)
+        .orElseThrow(() -> new RuntimeException("Invalid email or password!"));
+
+    if (!passwordEncoder.matches(password, user.getPassword())) {
+      throw new RuntimeException("Invalid email or password!");
+    }
+
+    return jwtTokenProvider.generateToken(user.getEmail());
   }
 }

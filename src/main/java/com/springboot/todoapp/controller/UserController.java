@@ -1,10 +1,12 @@
 package com.springboot.todoapp.controller;
 
 import com.springboot.todoapp.domain.dto.UserDTO;
+import com.springboot.todoapp.domain.request.UserLoginRequest;
 import com.springboot.todoapp.domain.request.UserRegistrationRequest;
 import com.springboot.todoapp.service.UserService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -22,7 +24,13 @@ public class UserController {
   @PostMapping("/register")
   public ResponseEntity<?> registerUser(
       @Valid @RequestBody UserRegistrationRequest request) {
-    String token = userService.registerUser(new UserDTO(request));
-    return ResponseEntity.ok().body("Bearer " + token);
+    userService.registerUser(new UserDTO(request));
+    return ResponseEntity.status(HttpStatus.CREATED).build();
+  }
+
+  @PostMapping("/login")
+  public ResponseEntity<?> loginUser(@Valid @RequestBody UserLoginRequest request) {
+    String token = userService.login(request.getEmail(), request.getPassword());
+    return ResponseEntity.ok().body(token);
   }
 }
