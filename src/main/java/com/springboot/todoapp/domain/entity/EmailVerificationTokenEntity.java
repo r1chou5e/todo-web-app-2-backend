@@ -5,32 +5,21 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
+import java.time.LocalDateTime;
 import lombok.Data;
 
 @Entity
-@Table(name = "users")
 @Data
-public class UserEntity {
+@Table(name = "email_tokens")
+public class EmailVerificationTokenEntity {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
 
-  @NotNull
-  @Size(min = 4, max = 20)
-  private String username;
+  private String token;
 
-  @NotNull
-  @Size(min = 6)
-  private String password;
-
-  @Email
-  @NotNull
-  @Size(max = 30)
   private String email;
 
-  private Boolean active;
+  private LocalDateTime expiryDate;
 }

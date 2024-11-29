@@ -4,6 +4,7 @@ import com.springboot.todoapp.domain.dto.UserDTO;
 import com.springboot.todoapp.domain.entity.UserEntity;
 import com.springboot.todoapp.repository.user.UserRepository;
 import com.springboot.todoapp.security.jwt.JwtTokenProvider;
+import lombok.val;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -15,12 +16,18 @@ public class UserService {
   private UserRepository userRepository;
 
   @Autowired
+  private EmailService emailService;
+
+  @Autowired
+  private TokenService tokenService;
+
+  @Autowired
   private PasswordEncoder passwordEncoder;
 
   @Autowired
   private JwtTokenProvider jwtTokenProvider;
 
-  public void registerUser(UserDTO request) {
+  public String registerUser(UserDTO request) {
     if (userRepository.existsByUsername(request.getUsername())) {
       throw new RuntimeException("Username is already taken!");
     }
@@ -32,8 +39,15 @@ public class UserService {
     user.setUsername(request.getUsername());
     user.setPassword(passwordEncoder.encode(request.getPassword()));
     user.setEmail(request.getEmail());
+    user.setActive(false);
 
-    userRepository.save(user);
+    val newUser = userRepository.save(user);
+
+    String token = tokenService.createVerficationToken(newUser.getEmail());
+
+    emailService.sendVerificationEmail(newUser.getEmail(), token);
+
+    return newUser.getEmail();
   }
 
   public String login(String email, String password) {
