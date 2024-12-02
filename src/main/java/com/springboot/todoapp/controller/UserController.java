@@ -1,7 +1,6 @@
 package com.springboot.todoapp.controller;
 
 import com.springboot.todoapp.domain.dto.UserDTO;
-import com.springboot.todoapp.domain.entity.UserEntity;
 import com.springboot.todoapp.domain.request.UserLoginRequest;
 import com.springboot.todoapp.domain.request.UserRegistrationRequest;
 import com.springboot.todoapp.repository.token.EmailVerificationTokenRepository;
@@ -9,12 +8,10 @@ import com.springboot.todoapp.repository.user.UserRepository;
 import com.springboot.todoapp.service.UserService;
 import jakarta.validation.Valid;
 import java.time.LocalDateTime;
-import java.util.Optional;
 import lombok.val;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;

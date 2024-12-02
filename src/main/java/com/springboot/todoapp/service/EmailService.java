@@ -12,8 +12,9 @@ public class EmailService {
   private JavaMailSender mailSender;
 
   public void sendVerificationEmail(String email, String token) {
+    String appUrl = "http://localhost:3000";
     String subject = "Account Verification";
-    String verificationUrl = "http://localhost:3000/email-confirmation?token=" + token;
+    String verificationUrl = appUrl + "/email-confirmation?token=" + token;
     String message = "Please click the following link to verify your account:\n" + verificationUrl;
 
     SimpleMailMessage mailMessage = new SimpleMailMessage();

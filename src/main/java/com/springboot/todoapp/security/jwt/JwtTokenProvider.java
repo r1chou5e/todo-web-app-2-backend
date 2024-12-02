@@ -12,11 +12,8 @@ public class JwtTokenProvider {
 
   private final SecretKey key = Keys.secretKeyFor(SignatureAlgorithm.HS256);
 
-  private final long jwtExpirationMs = 86400000;
-
   public String generateToken(String email) {
     return Jwts.builder().setSubject(email).setIssuedAt(new Date())
-        .setExpiration(new Date(new Date().getTime() + jwtExpirationMs))
         .signWith(key).compact();
   }
 }

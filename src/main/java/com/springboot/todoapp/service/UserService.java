@@ -54,10 +54,16 @@ public class UserService {
     UserEntity user = userRepository.findByEmail(email)
         .orElseThrow(() -> new RuntimeException("Invalid email or password!"));
 
+    if (!user.getActive()) {
+      throw new RuntimeException("User is not active!");
+    }
+
     if (!passwordEncoder.matches(password, user.getPassword())) {
       throw new RuntimeException("Invalid email or password!");
     }
 
-    return jwtTokenProvider.generateToken(user.getEmail());
+    String token = tokenService.createAccessToken(user.getId(), user.getEmail());
+
+    return "Bearer " + token;
   }
 }
