@@ -8,4 +8,6 @@ public interface AccessTokenRepository extends CrudRepository<AccessTokenEntity,
   AccessTokenEntity findAccessTokenEntitiesByUserId(Long userId);
 
   boolean existsByToken(String token);
+
+  AccessTokenEntity findByToken(String token);
 }
