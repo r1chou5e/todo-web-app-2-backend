@@ -5,10 +5,11 @@ import lombok.Data;
 
 @Builder
 @Data
-public class ProfileDTO {
+public class LoginProfileDTO {
 
   String username;
   String email;
   String avatarUrl;
   String dob;
+  boolean isExpired;
 }

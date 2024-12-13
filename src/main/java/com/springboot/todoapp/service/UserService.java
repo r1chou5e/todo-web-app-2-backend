@@ -1,8 +1,9 @@
 package com.springboot.todoapp.service;
 
-import com.springboot.todoapp.domain.dto.ProfileDTO;
+import com.springboot.todoapp.domain.dto.LoginProfileDTO;
 import com.springboot.todoapp.repository.token.AccessTokenRepository;
 import com.springboot.todoapp.repository.user.UserRepository;
+import java.time.LocalDateTime;
 import lombok.val;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -16,15 +17,22 @@ public class UserService {
   @Autowired
   private AccessTokenRepository accessTokenRepository;
 
-  public ProfileDTO getUserProfileByAccessToken(String accessToken) {
+  public LoginProfileDTO getUserProfileByAccessToken(String accessToken) {
     val token = accessTokenRepository.findByToken(accessToken);
     if (token != null) {
+
+      if (token.getExpiresAt().isBefore(LocalDateTime.now())) {
+        return LoginProfileDTO.builder().isExpired(true).build();
+      }
+
       val user = userRepository.findById(token.getUserId()).orElse(null);
 
       if (user != null) {
-        return ProfileDTO.builder().username(user.getUsername()).email(user.getEmail()).build();
+        return LoginProfileDTO.builder().username(user.getUsername()).email(user.getEmail())
+            .isExpired(false)
+            .build();
       }
     }
-    return ProfileDTO.builder().build();
+    return LoginProfileDTO.builder().isExpired(false).build();
   }
 }

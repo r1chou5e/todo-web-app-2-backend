@@ -30,7 +30,8 @@ public class WebSecurityConfig {
         .cors(httpSecurityCorsConfigurer -> httpSecurityCorsConfigurer.configurationSource(
             corsConfigurationSource()))
         .authorizeHttpRequests(
-            auth -> auth.requestMatchers("/api/auth/**").permitAll().anyRequest()
+            auth -> auth.requestMatchers("/api/auth/**", "/api/user/{token}").permitAll()
+                .anyRequest()
                 .authenticated())
         .httpBasic(Customizer.withDefaults());
 

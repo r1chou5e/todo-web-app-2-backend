@@ -1,6 +1,6 @@
 package com.springboot.todoapp.controller;
 
-import com.springboot.todoapp.domain.response.UserProfileResponse;
+import com.springboot.todoapp.domain.response.LoginProfileResponse;
 import com.springboot.todoapp.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,7 +16,7 @@ public class UserController {
   private UserService userService;
 
   @GetMapping("/{token}")
-  public UserProfileResponse getUserProfileByAccessToken(@PathVariable String token) {
-    return new UserProfileResponse(userService.getUserProfileByAccessToken(token));
+  public LoginProfileResponse getUserProfileByAccessToken(@PathVariable String token) {
+    return new LoginProfileResponse(userService.getUserProfileByAccessToken(token));
   }
 }
