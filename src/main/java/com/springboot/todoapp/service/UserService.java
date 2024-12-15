@@ -22,17 +22,16 @@ public class UserService {
     if (token != null) {
 
       if (token.getExpiresAt().isBefore(LocalDateTime.now())) {
-        return LoginProfileDTO.builder().isExpired(true).build();
+        throw new RuntimeException("Access token expired");
       }
 
       val user = userRepository.findById(token.getUserId()).orElse(null);
 
       if (user != null) {
         return LoginProfileDTO.builder().username(user.getUsername()).email(user.getEmail())
-            .isExpired(false)
             .build();
       }
     }
-    return LoginProfileDTO.builder().isExpired(false).build();
+    return LoginProfileDTO.builder().build();
   }
 }

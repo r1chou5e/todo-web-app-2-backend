@@ -11,5 +11,4 @@ public class LoginProfileDTO {
   String email;
   String avatarUrl;
   String dob;
-  boolean isExpired;
 }
