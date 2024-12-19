@@ -21,10 +21,6 @@ public class UserService {
     val token = accessTokenRepository.findByToken(accessToken);
     if (token != null) {
 
-      if (token.getExpiresAt().isBefore(LocalDateTime.now())) {
-        throw new RuntimeException("Access token expired");
-      }
-
       val user = userRepository.findById(token.getUserId()).orElse(null);
 
       if (user != null) {

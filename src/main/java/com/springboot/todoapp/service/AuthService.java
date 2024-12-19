@@ -2,9 +2,11 @@ package com.springboot.todoapp.service;
 
 import com.springboot.todoapp.domain.dto.UserDTO;
 import com.springboot.todoapp.domain.entity.UserEntity;
+import com.springboot.todoapp.repository.token.AccessTokenRepository;
 import com.springboot.todoapp.repository.token.EmailVerificationTokenRepository;
 import com.springboot.todoapp.repository.user.UserRepository;
 import java.time.LocalDateTime;
+import java.util.Objects;
 import lombok.val;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -27,6 +29,9 @@ public class AuthService {
 
   @Autowired
   private EmailVerificationTokenRepository emailVerificationTokenRepository;
+
+  @Autowired
+  private AccessTokenRepository accessTokenRepository;
 
 
   public String registerUser(UserDTO request) {
@@ -67,6 +72,24 @@ public class AuthService {
     String token = tokenService.createAccessToken(user.getId(), user.getEmail());
 
     return "Bearer " + token;
+  }
+
+  public String logout(String email, String accessToken) {
+    String token = accessToken.startsWith("Bearer ") ? accessToken.substring(7) : accessToken;
+    val foundToken = accessTokenRepository.findByToken(token);
+    val user = userRepository.findByEmail(email);
+
+    if (user.isEmpty()) {
+      throw new RuntimeException("User not found!");
+    }
+    if (!Objects.equals(foundToken.getUserId(), user.get().getId())) {
+      throw new RuntimeException("Invalid access token!");
+    }
+    
+    foundToken.setRevoked(true);
+    accessTokenRepository.save(foundToken);
+
+    return "Logout successfully";
   }
 
   public String verifyUser(String token) {
