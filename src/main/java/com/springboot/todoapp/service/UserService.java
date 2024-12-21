@@ -3,6 +3,7 @@ package com.springboot.todoapp.service;
 import com.springboot.todoapp.domain.dto.LoginProfileDTO;
 import com.springboot.todoapp.repository.token.AccessTokenRepository;
 import com.springboot.todoapp.repository.user.UserRepository;
+import com.springboot.todoapp.utils.TokenUtils;
 import java.time.LocalDateTime;
 import lombok.val;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +19,8 @@ public class UserService {
   private AccessTokenRepository accessTokenRepository;
 
   public LoginProfileDTO getUserProfileByAccessToken(String accessToken) {
-    val token = accessTokenRepository.findByToken(accessToken);
+    String rawToken = TokenUtils.getRawTokenWithoutBearer(accessToken);
+    val token = accessTokenRepository.findByToken(rawToken);
     if (token != null) {
 
       val user = userRepository.findById(token.getUserId()).orElse(null);
