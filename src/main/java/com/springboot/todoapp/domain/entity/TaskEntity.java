@@ -28,6 +28,9 @@ public class TaskEntity {
   @Column(name = "description")
   private String description;
 
+  @Column(name = "sub_type_id")
+  private Long subTypeId;
+
   @Column(nullable = false)
   private boolean completed;
 
