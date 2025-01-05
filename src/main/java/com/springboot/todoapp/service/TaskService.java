@@ -5,6 +5,7 @@ import com.springboot.todoapp.domain.entity.TaskEntity;
 import com.springboot.todoapp.repository.task.TaskRepository;
 import com.springboot.todoapp.repository.todolist.TodoListRepository;
 import com.springboot.todoapp.repository.type.SubtypeRepository;
+import java.util.List;
 import lombok.val;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -49,5 +50,10 @@ public class TaskService {
     } catch (Exception e) {
       throw new RuntimeException("Cannot insert task");
     }
+  }
+
+  public List<TaskDTO> getTasksByTodoList(Long id) {
+    val taskList = taskRepository.findTaskEntitiesByTodoListId(id);
+    return taskList.stream().map(TaskDTO::fromEntity).toList();
   }
 }
