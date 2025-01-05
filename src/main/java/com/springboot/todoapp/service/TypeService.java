@@ -61,4 +61,13 @@ public class TypeService {
 
     return subtypeRepository.findSubtypeEntitiesByType(type).stream().map(SubtypeDTO::new).toList();
   }
+
+  public Long getSubtypeIdByTypeCodeAndSubtypeValue(String typeCode, String subtypeValue) {
+    val subtype = subtypeRepository.findSubtypeEntitiesByTypeCodeAndSubTypeValue(typeCode,
+        subtypeValue);
+    if (subtype == null) {
+      throw new RuntimeException("Subtype not found");
+    }
+    return subtype.getId();
+  }
 }

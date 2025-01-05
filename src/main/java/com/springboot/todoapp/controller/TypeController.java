@@ -34,9 +34,15 @@ public class TypeController {
     return ResponseEntity.ok(message);
   }
 
-  @GetMapping("/get-subtypes-by-type-code/{typeCode}")
+  @GetMapping("/{typeCode}")
   public SubtypesListResponse getSubtypesByTypeCode(@PathVariable String typeCode) {
     val subtypes = typeService.getSubtypesByTypeCode(typeCode);
     return new SubtypesListResponse(subtypes);
+  }
+
+  @GetMapping("/subtype/{typeCode}/{subtypeValue}")
+  public Long getSubtypeId(@PathVariable String typeCode,
+      @PathVariable String subtypeValue) {
+    return typeService.getSubtypeIdByTypeCodeAndSubtypeValue(typeCode, subtypeValue);
   }
 }

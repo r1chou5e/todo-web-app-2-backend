@@ -17,7 +17,7 @@ public class TaskController {
   @Autowired
   private TaskService taskService;
 
-  @PostMapping("/")
+  @PostMapping("")
   public ResponseEntity<?> createNewTask(@Valid @RequestBody CreateTaskRequest request) {
     String message = taskService.addTask(request.toDTO());
     return ResponseEntity.ok(message);
