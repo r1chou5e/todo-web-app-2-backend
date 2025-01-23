@@ -17,17 +17,21 @@ public class TaskListResponse {
   @Data
   public static class Task {
 
+    private Long taskId;
     private String title;
     private String description;
     private Long subTypeId;
     private LocalDateTime dueDate;
+    private boolean completed;
     private Long todoListId;
 
     public Task(TaskDTO dto) {
+      this.taskId = dto.getTaskId();
       this.title = dto.getTitle();
       this.description = dto.getDescription();
       this.subTypeId = dto.getSubTypeId();
       this.dueDate = dto.getDueDate();
+      this.completed = dto.isCompleted();
       this.todoListId = dto.getTodoListId();
     }
   }

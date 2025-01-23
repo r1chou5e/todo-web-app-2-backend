@@ -56,4 +56,20 @@ public class TaskService {
     val taskList = taskRepository.findTaskEntitiesByTodoListId(id);
     return taskList.stream().map(TaskDTO::fromEntity).toList();
   }
+
+  public String updateTaskStatus(Long taskId, boolean completed) {
+    val task = taskRepository.findById(taskId);
+    if (task.isEmpty()) {
+      throw new RuntimeException("Task not found");
+    } else {
+      TaskEntity entity = task.get();
+      entity.setCompleted(completed);
+      try {
+        taskRepository.save(entity);
+        return "Update task successfully";
+      } catch (Exception e) {
+        throw new RuntimeException("Cannot update task");
+      }
+    }
+  }
 }
